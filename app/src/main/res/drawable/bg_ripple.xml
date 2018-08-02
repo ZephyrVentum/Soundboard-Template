@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ripple xmlns:android="http://schemas.android.com/apk/res/android"
-    android:color="@color/colorAccent">
-    <item android:drawable="@drawable/img_victory" />
+    android:color="@color/ripple_effect_color">
+    <item android:id="@+id/ripple_id" android:drawable="@drawable/blind"/>
 </ripple>
