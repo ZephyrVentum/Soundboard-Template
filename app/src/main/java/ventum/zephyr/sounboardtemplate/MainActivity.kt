@@ -1,22 +1,21 @@
 package ventum.zephyr.sounboardtemplate
 
-import android.content.res.ColorStateList
 import android.databinding.DataBindingUtil
-import android.graphics.PorterDuff
-import android.graphics.drawable.RippleDrawable
+import android.media.MediaPlayer
 import android.os.Bundle
-import android.support.annotation.DrawableRes
-import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
-import android.widget.ImageView
+import android.support.v7.widget.GridLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions.bitmapTransform
 import jp.wasabeef.glide.transformations.BlurTransformation
 import ventum.zephyr.sounboardtemplate.databinding.ActivityMainBinding
+import ventum.zephyr.sounboardtemplate.model.SoundItem
 
-class MainActivity : AppCompatActivity() {
+
+class MainActivity : AppCompatActivity(), SoundItemActionListener {
 
     private lateinit var binding: ActivityMainBinding
+    private lateinit var soundItems: ArrayList<SoundItem>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,20 +23,17 @@ class MainActivity : AppCompatActivity() {
         Glide.with(this).load(R.drawable.bg_main)
                 .apply(bitmapTransform(BlurTransformation(22)))
                 .into(binding.bgImageView)
+        soundItems = ArrayList()
+        soundItems.add(SoundItem(R.drawable.img_victory, R.raw.victory_sound))
+        soundItems.add(SoundItem(R.drawable.img_defend, R.raw.defend_sound))
+        soundItems.add(SoundItem(R.drawable.blind, R.raw.blind_sound))
 
-        setupImage(binding.testImage, R.drawable.img_victory)
-        setupImage(binding.test2Image, R.drawable.img_defend)
-        setupImage(binding.test3Image, R.drawable.blind)
+        binding.soundsRecycleView.adapter = SoundsAdapter(soundItems, this)
+        binding.soundsRecycleView.layoutManager = GridLayoutManager(this, 2)
     }
 
-    private fun setupImage(view: ImageView, @DrawableRes drawable: Int){
-        view.setColorFilter(ContextCompat.getColor(this, R.color.item_image_mask_color), PorterDuff.Mode.SRC_OVER)
-        view.setImageDrawable(getRippleDrawable(drawable))
+    override fun onSoundItemClicked(position: Int) {
+        val mp = MediaPlayer.create(this, soundItems[position].sound)
+        mp.start()
     }
-
-    private fun getRippleColorStateList(color: Int): ColorStateList = ColorStateList(arrayOf(intArrayOf()), intArrayOf(color))
-
-    private fun getRippleDrawable(@DrawableRes drawable: Int): RippleDrawable = RippleDrawable(
-            getRippleColorStateList(ContextCompat.getColor(this, R.color.ripple_effect_color)),
-            getDrawable(drawable), null)
 }
