@@ -13,7 +13,7 @@ import android.widget.ImageView
 import ventum.zephyr.sounboardtemplate.databinding.ItemSoundBinding
 import ventum.zephyr.sounboardtemplate.model.SoundItem
 
-class SoundsAdapter(val soundItems: ArrayList<SoundItem>, val listener: SoundItemActionListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class SoundsAdapter(private val soundItems: ArrayList<SoundItem>, val listener: SoundItemActionListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val binding = ItemSoundBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return SoundViewHolder(binding)
@@ -25,7 +25,7 @@ class SoundsAdapter(val soundItems: ArrayList<SoundItem>, val listener: SoundIte
         (holder as SoundViewHolder).bind(soundItems[position])
     }
 
-    private inner class SoundViewHolder constructor(var binding: ItemSoundBinding) : RecyclerView.ViewHolder(binding.getRoot()) {
+    private inner class SoundViewHolder(var binding: ItemSoundBinding) : RecyclerView.ViewHolder(binding.root) {
 
         internal fun bind(itemSound: SoundItem) {
             setupImage(binding.imageRoundedImageView, itemSound.image)
