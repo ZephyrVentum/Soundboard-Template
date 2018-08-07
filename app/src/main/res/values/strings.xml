@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Sounboard Template</string>
+    <string name="share_menu">Share</string>
+    <string name="rate_us_menu">Rate us!</string>
 </resources>

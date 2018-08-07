@@ -1,4 +1,4 @@
-package ventum.zephyr.sounboardtemplate
+package ventum.zephyr.sounboardtemplate.adapter
 
 import android.content.Context
 import android.content.res.ColorStateList
@@ -10,6 +10,8 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
+import ventum.zephyr.sounboardtemplate.R
+import ventum.zephyr.sounboardtemplate.listener.SoundItemActionListener
 import ventum.zephyr.sounboardtemplate.databinding.ItemSoundBinding
 import ventum.zephyr.sounboardtemplate.model.SoundItem
 

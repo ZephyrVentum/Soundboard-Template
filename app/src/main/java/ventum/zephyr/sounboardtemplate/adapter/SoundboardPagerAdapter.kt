@@ -1,9 +1,10 @@
-package ventum.zephyr.sounboardtemplate
+package ventum.zephyr.sounboardtemplate.adapter
 
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
 import ventum.zephyr.sounboardtemplate.model.SoundboardCategory
+import ventum.zephyr.sounboardtemplate.ui.SoundboardFragment
 
 
 class SoundboardPagerAdapter(fm: FragmentManager,
