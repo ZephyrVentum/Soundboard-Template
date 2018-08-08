@@ -41,9 +41,8 @@ class SoundboardActivity : AppCompatActivity() {
 
     private fun setupToolbar() {
         setSupportActionBar(binding.toolbar)
-        val actionBar = supportActionBar
-        if (actionBar != null) {
-            actionBar.title = getToolbarTitle()
+        supportActionBar.let {
+            it?.title = getToolbarTitle()
             binding.toolbar.setBackgroundColor(getToolbarBackgroundColor())
             binding.toolbar.setTitleTextColor(getToolbarItemsColor())
         }
@@ -56,8 +55,7 @@ class SoundboardActivity : AppCompatActivity() {
     private fun getToolbarItemsColor() = ContextCompat.getColor(this, android.R.color.white)
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        val inflater = menuInflater
-        inflater.inflate(R.menu.menu, menu)
+        menuInflater.inflate(R.menu.menu, menu)
         for (i in 0 until menu.size()) {
             menu.getItem(i).icon.setColorFilter(getToolbarItemsColor(), PorterDuff.Mode.SRC_ATOP)
         }
