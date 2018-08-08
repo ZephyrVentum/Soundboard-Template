@@ -29,12 +29,16 @@ android {
     dataBinding {
         enabled = true
     }
+    kapt {
+        generateStubs = true
+    }
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     kapt "com.android.databinding:compiler:$compiler_version"
+    api project(':soundboard-template')
 
     implementation "com.android.support:recyclerview-v7:$support_version"
     implementation "com.android.support:appcompat-v7:$support_version"
