@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--Base Colors-->
+    <color name="colorPrimary">#2B2B2B</color>
+    <color name="colorPrimaryDark">@android:color/black</color>
+    <color name="colorAccent">#F1DC07</color>
+
+    <!--Secondary colors-->
+    <color name="item_image_mask_color">#50000000</color>
+    <color name="ripple_effect_color">#78ffffff</color>
+    <color name="toolbar_items_color">@android:color/white</color>
+</resources>
