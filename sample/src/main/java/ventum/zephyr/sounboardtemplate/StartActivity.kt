@@ -1,6 +1,5 @@
 package ventum.zephyr.sounboardtemplate
 
-import android.support.annotation.DrawableRes
 import ventum.zephyr.soundboardtemplate.model.SoundItem
 import ventum.zephyr.soundboardtemplate.model.SoundItems
 import ventum.zephyr.soundboardtemplate.model.SoundboardCategory
@@ -16,21 +15,19 @@ class StartActivity : SoundboardActivity() {
         return soundboardCategories
     }
 
-    @DrawableRes
-    override fun getBackgroundImage(): Int = R.drawable.sample_image
-
     private fun createFirstCategory(): SoundboardCategory {
         val soundItems = SoundItems()
-        for (i in 0..6) {
-            soundItems.add(SoundItem(R.drawable.sample_image, R.raw.lvlup_sound))
+        for (i in 0..6 step 1) {
+            soundItems.add(SoundItem(R.drawable.bg_main, R.raw.lvlup_sound))
         }
         return SoundboardCategory("First", soundItems)
     }
 
     private fun createSecondCategory(): SoundboardCategory {
-        val soundItems = SoundItems()
-        for (i in 0..11) {
-            soundItems.add(SoundItem(R.drawable.sample_image, R.raw.lvlup_sound))
+        val soundItems = SoundItems().apply {
+            for (i in 0..11) {
+                add(SoundItem(R.drawable.bg_main, R.raw.lvlup_sound))
+            }
         }
         return SoundboardCategory("Second", soundItems)
     }
@@ -38,7 +35,7 @@ class StartActivity : SoundboardActivity() {
     private fun createThirdCategory(): SoundboardCategory {
         val soundItems = SoundItems()
         for (i in 0..5) {
-            soundItems.add(SoundItem(R.drawable.sample_image, R.raw.lvlup_sound))
+            soundItems.add(SoundItem(R.drawable.bg_main, R.raw.lvlup_sound))
         }
         return SoundboardCategory("Third", soundItems)
     }
