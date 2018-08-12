@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Soundboard-Template</string>
+    <string name="admob_app_id">ca-app-pub-9581992838845527~8791449735</string>
+    <string name="admob_banner_unit_id">ca-app-pub-9581992838845527/3896531490</string>
+    <string name="admob_interstitial_unit_id">ca-app-pub-9581992838845527/2290933646</string>
+    <string name="share_title">Share this soundboard with:</string>
+    <string name="share_text">Look at this fun! The best soundboard ever!\nhttps://github.com/ZephyrVentum/Soundboard-Template</string>
+    <string name="rate_us_market">market://details?id=%s</string>
+</resources>
