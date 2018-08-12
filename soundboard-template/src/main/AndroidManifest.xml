@@ -1,2 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="ventum.zephyr.soundboardtemplate" />
+    package="ventum.zephyr.soundboardtemplate" >
+
+    <uses-permission android:name="android.permission.INTERNET" />
+</manifest>

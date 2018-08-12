@@ -1,5 +1,6 @@
 package ventum.zephyr.soundboardtemplate.ui
 
+import android.content.Context
 import android.databinding.DataBindingUtil
 import android.media.MediaPlayer
 import android.os.Bundle
@@ -11,6 +12,7 @@ import android.view.ViewGroup
 import ventum.zephyr.soundboardtemplate.R
 import ventum.zephyr.soundboardtemplate.adapter.SoundsAdapter
 import ventum.zephyr.soundboardtemplate.databinding.FragmentSoundboardBinding
+import ventum.zephyr.soundboardtemplate.listener.AdShowTriggerListener
 import ventum.zephyr.soundboardtemplate.listener.SoundItemActionListener
 import ventum.zephyr.soundboardtemplate.model.SoundItems
 import java.io.Serializable
@@ -19,6 +21,7 @@ class SoundboardFragment : Fragment(), SoundItemActionListener {
 
     private lateinit var binding: FragmentSoundboardBinding
     private lateinit var soundItems: SoundItems
+    private lateinit var adShowTriggerListener: AdShowTriggerListener
 
     companion object {
         private const val SOUND_ITEMS_KEY = "SOUND_ITEMS_KEY"
@@ -46,8 +49,16 @@ class SoundboardFragment : Fragment(), SoundItemActionListener {
         }
     }
 
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+        if (context is SoundboardActivity) {
+            adShowTriggerListener = context
+        }
+    }
+
     override fun onSoundItemClicked(position: Int) {
         val mp = MediaPlayer.create(context, soundItems[position].sound)
         mp.start()
+        adShowTriggerListener.onAdShowTrigger()
     }
 }

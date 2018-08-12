@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
@@ -33,10 +34,10 @@
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
-            android:elevation="8dp"
             android:layout_width="match_parent"
             android:layout_height="?android:actionBarSize"
             android:background="@color/colorPrimary"
+            android:elevation="8dp"
             app:layout_constraintBottom_toTopOf="@id/tabLayout"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -46,8 +47,18 @@
             android:id="@+id/viewPager"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            ads:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tabLayout" />
+
+        <com.google.android.gms.ads.AdView
+            android:id="@+id/adView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            ads:adSize="BANNER"
+            ads:adUnitId="@string/admob_banner_unit_id"
+            ads:layout_constraintStart_toStartOf="parent"
+            ads:layout_constraintEnd_toEndOf="parent"
+            ads:layout_constraintBottom_toBottomOf="parent"/>
 
     </android.support.constraint.ConstraintLayout>
 </layout>

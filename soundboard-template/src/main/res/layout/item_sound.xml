@@ -21,7 +21,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:riv_border_color="@color/colorAccent"
+            app:riv_border_color="@color/item_image_border_color"
             app:riv_border_width="2dp"
             app:riv_corner_radius="50dp"
             tools:src="@drawable/blind" />

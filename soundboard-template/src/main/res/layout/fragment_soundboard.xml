@@ -14,7 +14,10 @@
             android:layout_height="match_parent"
             android:background="@android:color/transparent"
             android:clipToPadding="false"
-            android:padding="@dimen/grid_spacing_size"
+            android:paddingBottom="50dp"
+            android:paddingEnd="@dimen/grid_spacing_size"
+            android:paddingStart="@dimen/grid_spacing_size"
+            android:paddingTop="@dimen/grid_spacing_size"
             tools:layoutManager="android.support.v7.widget.GridLayoutManager"
             tools:listitem="@layout/item_sound"
             tools:spanCount="2" />
