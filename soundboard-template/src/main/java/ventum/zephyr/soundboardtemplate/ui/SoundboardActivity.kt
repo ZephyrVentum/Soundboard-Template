@@ -10,8 +10,6 @@ import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Toast
-import android.widget.Toast.LENGTH_SHORT
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions.bitmapTransform
 import com.google.android.gms.ads.AdListener
@@ -122,8 +120,6 @@ abstract class SoundboardActivity : AppCompatActivity(), SoundItemActionListener
     }
 
     private fun showRateUs() {
-        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.rate_us_market, "com.zephyr.ventum"))))
+        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.rate_us_market))))
     }
-
-    private fun showToastMessage(toastText: String) = Toast.makeText(this, toastText, LENGTH_SHORT).show()
 }
