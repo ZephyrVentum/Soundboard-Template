@@ -17,23 +17,21 @@ import ventum.zephyr.soundboardtemplate.listener.SoundItemActionListener
 import ventum.zephyr.soundboardtemplate.model.SoundItem
 
 class SoundsAdapter(private val soundItems: ArrayList<SoundItem>, val listener: SoundItemActionListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val binding = ItemSoundBinding.inflate(LayoutInflater.from(parent.context), parent, false)
 
-        return SoundViewHolder(binding)
-    }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
+            SoundViewHolder(ItemSoundBinding.inflate(LayoutInflater.from(parent.context), parent, false))
 
     override fun getItemCount(): Int = soundItems.size
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        (holder as SoundViewHolder).bind(soundItems[position])
-    }
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) =
+            (holder as SoundViewHolder).bind(soundItems[position])
 
     private inner class SoundViewHolder(var binding: ItemSoundBinding) : RecyclerView.ViewHolder(binding.root) {
 
         internal fun bind(itemSound: SoundItem) {
             setupImage(binding.imageRoundedImageView, itemSound.image)
-            binding.imageRoundedImageView.setOnClickListener { listener.onSoundItemClicked(adapterPosition) }
+            binding.imageRoundedImageView.setOnClickListener { listener.onSoundItemClicked(itemSound) }
+            binding.nameTextView.text = if (itemSound.name >= 0) binding.root.context.getString(itemSound.name) else ""
         }
 
         private fun setupImage(@NonNull view: ImageView, @DrawableRes drawable: Int) {

@@ -3,15 +3,13 @@ package ventum.zephyr.soundboardtemplate.ui
 import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.graphics.PorterDuff
+import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Bundle
-import android.support.annotation.DrawableRes
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Toast
-import android.widget.Toast.LENGTH_SHORT
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions.bitmapTransform
 import com.google.android.gms.ads.AdListener
@@ -21,50 +19,63 @@ import com.google.android.gms.ads.MobileAds
 import jp.wasabeef.glide.transformations.BlurTransformation
 import ventum.zephyr.soundboardtemplate.R
 import ventum.zephyr.soundboardtemplate.adapter.SoundboardPagerAdapter
-import ventum.zephyr.soundboardtemplate.listener.AdShowTriggerListener
+import ventum.zephyr.soundboardtemplate.listener.SoundItemActionListener
+import ventum.zephyr.soundboardtemplate.model.SoundItem
 import ventum.zephyr.soundboardtemplate.model.SoundboardCategory
+import java.util.*
 
-abstract class SoundboardActivity : AppCompatActivity(), AdShowTriggerListener {
+abstract class SoundboardActivity : AppCompatActivity(), SoundItemActionListener {
 
     private lateinit var binding: ventum.zephyr.soundboardtemplate.databinding.ActivitySoundboardBinding
     private lateinit var soundboardCategories: ArrayList<SoundboardCategory>
     private lateinit var interstitialAd: InterstitialAd
+    private var mediaPlayer: MediaPlayer = MediaPlayer()
+    private var clicksAdCounter: Int = 0
+    private var clicksToShowAd: Int = Random().nextInt(6) + 10
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_soundboard)
+        soundboardCategories = getSoundboardCategories()
         setupAds()
         setupToolbar()
         setupBackgroundImage()
-        soundboardCategories = getSoundboardCategories()
-
-        binding.viewPager.adapter = SoundboardPagerAdapter(supportFragmentManager, soundboardCategories)
-        binding.tabLayout.setupWithViewPager(binding.viewPager)
+        setupViewPager()
     }
 
     private fun setupAds() {
         MobileAds.initialize(this, getString(R.string.admob_app_id))
         binding.adView.loadAd(AdRequest.Builder().build())
-        interstitialAd = InterstitialAd(this)
-        interstitialAd.adUnitId = getString(R.string.admob_interstitial_unit_id)
-        interstitialAd.loadAd(AdRequest.Builder().build())
-        interstitialAd.adListener = object : AdListener() {
-            override fun onAdClosed() {
-                interstitialAd.loadAd(AdRequest.Builder().build())
+        interstitialAd = InterstitialAd(this).apply {
+            adUnitId = getString(R.string.admob_interstitial_unit_id)
+            adListener = object : AdListener() {
+                override fun onAdClosed() {
+                    clicksAdCounter = 0
+                    clicksToShowAd = Random().nextInt(6) + 10
+                    interstitialAd.loadAd(AdRequest.Builder().build())
+                }
             }
-        }
+        }.also { it.loadAd(AdRequest.Builder().build()) }
     }
-
-    @DrawableRes
-    abstract fun getBackgroundImage(): Int
 
     abstract fun getSoundboardCategories(): ArrayList<SoundboardCategory>
 
-    override fun onAdShowTrigger() = interstitialAd.let { if (it.isLoaded) it.show() }
+    private fun onAdShowTrigger() = interstitialAd.let { if (it.isLoaded && ++clicksAdCounter == clicksToShowAd) it.show() }
 
-    private fun setupBackgroundImage() = Glide.with(this).load(getBackgroundImage())
+    override fun onSoundItemClicked(item: SoundItem) {
+        val mp = MediaPlayer.create(this, item.sound)
+        mp.start()
+        onAdShowTrigger()
+    }
+
+    private fun setupBackgroundImage() = Glide.with(this).load(R.drawable.bg_main)
             .apply(bitmapTransform(BlurTransformation(22)))
             .into(binding.bgImageView)
+
+    private fun setupViewPager() {
+        binding.viewPager.adapter = SoundboardPagerAdapter(supportFragmentManager, soundboardCategories)
+        binding.tabLayout.setupWithViewPager(binding.viewPager)
+    }
 
     private fun setupToolbar() {
         setSupportActionBar(binding.toolbar)
@@ -109,8 +120,6 @@ abstract class SoundboardActivity : AppCompatActivity(), AdShowTriggerListener {
     }
 
     private fun showRateUs() {
-        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.rate_us_market, "com.zephyr.ventum"))))
+        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.rate_us_market))))
     }
-
-    private fun showToastMessage(toastText: String) = Toast.makeText(this, toastText, LENGTH_SHORT).show()
 }
