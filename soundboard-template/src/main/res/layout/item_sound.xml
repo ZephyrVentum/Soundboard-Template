@@ -26,5 +26,20 @@
             app:riv_corner_radius="50dp"
             tools:src="@drawable/bg_main" />
 
+        <TextView
+            android:id="@+id/nameTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="@color/item_text_color"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/imageRoundedImageView"
+            app:layout_constraintEnd_toEndOf="@id/imageRoundedImageView"
+            app:layout_constraintStart_toStartOf="@id/imageRoundedImageView"
+            app:layout_constraintTop_toTopOf="@id/imageRoundedImageView"
+            tools:text="Example Sound" />
+
     </android.support.constraint.ConstraintLayout>
 </layout>

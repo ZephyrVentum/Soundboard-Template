@@ -31,12 +31,13 @@ class SoundsAdapter(private val soundItems: ArrayList<SoundItem>, val listener: 
         internal fun bind(itemSound: SoundItem) {
             setupImage(binding.imageRoundedImageView, itemSound.image)
             binding.imageRoundedImageView.setOnClickListener { listener.onSoundItemClicked(itemSound) }
+            binding.nameTextView.text = if (itemSound.name >= 0) binding.root.context.getString(itemSound.name) else ""
         }
 
         private fun setupImage(@NonNull view: ImageView, @DrawableRes drawable: Int) {
             val context: Context = view.context
             view.setColorFilter(ContextCompat.getColor(context, R.color.item_image_mask_color), PorterDuff.Mode.SRC_OVER)
-            view.setImageDrawable(getRippleDrawable(context,drawable))
+            view.setImageDrawable(getRippleDrawable(context, drawable))
         }
 
         private fun getRippleColorStateList(color: Int): ColorStateList = ColorStateList(arrayOf(intArrayOf()), intArrayOf(color))

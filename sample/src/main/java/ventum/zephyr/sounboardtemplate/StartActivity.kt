@@ -35,7 +35,7 @@ class StartActivity : SoundboardActivity() {
     private fun createThirdCategory(): SoundboardCategory {
         val soundItems = SoundItems()
         for (i in 0..5) {
-            soundItems.add(SoundItem(R.drawable.bg_main, R.raw.lvlup_sound))
+            soundItems.add(SoundItem(R.drawable.bg_main, R.raw.lvlup_sound, R.string.example_sound_name))
         }
         return SoundboardCategory("Third", soundItems)
     }

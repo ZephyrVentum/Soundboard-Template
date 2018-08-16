@@ -4,9 +4,10 @@ import android.os.Parcel
 import android.os.Parcelable
 import android.support.annotation.DrawableRes
 import android.support.annotation.RawRes
+import android.support.annotation.StringRes
 import java.io.Serializable
 
-class SoundItem(@DrawableRes val image: Int, @RawRes val sound: Int) : Parcelable {
+class SoundItem(@DrawableRes val image: Int, @RawRes val sound: Int, @StringRes val name: Int = -1) : Parcelable {
     constructor(source: Parcel) : this(
             source.readInt(),
             source.readInt()
