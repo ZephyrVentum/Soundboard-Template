@@ -40,9 +40,11 @@ dependencies {
     kapt "com.android.databinding:compiler:$compiler_version"
     api project(':soundboard-template')
 
-    //noinspection GradleCompatible
+    //noinspection GradleDependency,GradleCompatible
     implementation "com.android.support:recyclerview-v7:$support_version"
+    //noinspection GradleDependency
     implementation "com.android.support:appcompat-v7:$support_version"
+    //noinspection GradleDependency
     implementation "com.android.support:design:$support_version"
     implementation 'com.android.support.constraint:constraint-layout:1.1.2'
     implementation 'com.google.android.gms:play-services-ads:15.0.1'
