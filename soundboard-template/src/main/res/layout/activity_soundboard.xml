@@ -23,8 +23,10 @@
             tools:src="@drawable/bg_main" />
 
         <android.support.design.widget.TabLayout
+            ads:tabUnboundedRipple="true"
+            ads:tabRippleColor="@color/colorAccent"
             android:id="@+id/tabLayout"
-            style="@style/Widget.MaterialComponents.TabLayout"
+            ads:tabTextColor="@color/colorAccent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/colorPrimary"
