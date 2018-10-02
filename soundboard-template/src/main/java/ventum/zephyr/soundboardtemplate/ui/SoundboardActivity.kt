@@ -3,7 +3,8 @@ package ventum.zephyr.soundboardtemplate.ui
 import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.graphics.PorterDuff
-import android.media.MediaPlayer
+import android.media.AudioAttributes
+import android.media.SoundPool
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
@@ -29,18 +30,30 @@ abstract class SoundboardActivity : AppCompatActivity(), SoundItemActionListener
     private lateinit var binding: ventum.zephyr.soundboardtemplate.databinding.ActivitySoundboardBinding
     private lateinit var soundboardCategories: ArrayList<SoundboardCategory>
     private lateinit var interstitialAd: InterstitialAd
-    private var mediaPlayer: MediaPlayer = MediaPlayer()
-    private var clicksAdCounter: Int = 0
-    private var clicksToShowAd: Int = Random().nextInt(6) + 10
+    protected lateinit var soundPool: SoundPool
+    private var clicksAdCounter = 0
+    private var clicksToShowAd = Random().nextInt(6) + 10
+    private var isMultiStreamsEnable: Boolean = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_soundboard)
+        initSoundPool()
         soundboardCategories = getSoundboardCategories()
         setupAds()
         setupToolbar()
         setupBackgroundImage()
         setupViewPager()
+    }
+
+    private fun initSoundPool() {
+        soundPool = SoundPool.Builder().setAudioAttributes(
+                AudioAttributes.Builder()
+                        .setUsage(AudioAttributes.USAGE_GAME)
+                        .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                        .build())
+                .setMaxStreams(10)
+                .build()
     }
 
     private fun setupAds() {
@@ -63,9 +76,9 @@ abstract class SoundboardActivity : AppCompatActivity(), SoundItemActionListener
     private fun onAdShowTrigger() = interstitialAd.let { if (it.isLoaded && ++clicksAdCounter == clicksToShowAd) it.show() }
 
     override fun onSoundItemClicked(item: SoundItem) {
-        val mp = MediaPlayer.create(this, item.sound)
-        mp.start()
         onAdShowTrigger()
+        if (!isMultiStreamsEnable) soundPool.autoPause()
+        soundPool.play(item.soundId, 1f, 1f, 1, 0, 0f)
     }
 
     private fun setupBackgroundImage() = Glide.with(this).load(R.drawable.bg_main)
@@ -105,6 +118,10 @@ abstract class SoundboardActivity : AppCompatActivity(), SoundItemActionListener
             R.id.action_rate -> {
                 showRateUs()
                 handled = true
+            }
+            R.id.action_repeat -> {
+                isMultiStreamsEnable = !isMultiStreamsEnable
+                item.setIcon(if (isMultiStreamsEnable) R.drawable.ic_repeat_black_24dp else R.drawable.ic_repeat_one_black_24dp)
             }
         }
         return handled || super.onOptionsItemSelected(item)

@@ -5,14 +5,22 @@
         android:id="@+id/action_share"
         android:name="@string/share_menu"
         android:icon="@drawable/ic_share_black_24dp"
+        android:title="@string/share_menu"
         android:visible="true"
-        app:showAsAction="ifRoom"
-        android:title="@string/share_menu" />
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/action_rate"
         android:name="@string/rate_us_menu"
         android:icon="@drawable/ic_star_black_24dp"
+        android:title="@string/rate_us_menu"
         android:visible="true"
-        app:showAsAction="ifRoom"
-        android:title="@string/rate_us_menu" />
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/action_repeat"
+        android:name="@string/repeat_menu"
+        android:icon="@drawable/ic_repeat_black_24dp"
+        android:title="@string/repeat_menu"
+        android:visible="true"
+        app:showAsAction="ifRoom" />
 </menu>

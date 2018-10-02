@@ -42,7 +42,7 @@ class SoundsAdapter(private val soundItems: ArrayList<SoundItem>, val listener: 
 
         private fun getRippleColorStateList(color: Int): ColorStateList = ColorStateList(arrayOf(intArrayOf()), intArrayOf(color))
 
-        private fun getRippleDrawable(context: Context, @DrawableRes drawable: Int): RippleDrawable = RippleDrawable(
+        private fun getRippleDrawable(context: Context, @DrawableRes drawable: Int) = RippleDrawable(
                 getRippleColorStateList(ContextCompat.getColor(context, R.color.ripple_effect_color)),
                 ContextCompat.getDrawable(context, drawable), null)
     }

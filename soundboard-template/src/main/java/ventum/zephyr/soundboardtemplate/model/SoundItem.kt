@@ -7,8 +7,13 @@ import android.support.annotation.RawRes
 import android.support.annotation.StringRes
 import java.io.Serializable
 
-class SoundItem(@DrawableRes val image: Int, @RawRes val sound: Int, @StringRes val name: Int = -1) : Parcelable {
+class SoundItem(@DrawableRes val image: Int, @RawRes val sound: Int, @StringRes val name: Int = -1, val soundId: Int = -1) : Parcelable {
+
+    constructor(@DrawableRes image: Int, @RawRes sound: Int, soundId: Int) : this(image, sound, -1, soundId)
+
     constructor(source: Parcel) : this(
+            source.readInt(),
+            source.readInt(),
             source.readInt(),
             source.readInt()
     )
@@ -18,6 +23,8 @@ class SoundItem(@DrawableRes val image: Int, @RawRes val sound: Int, @StringRes 
     override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {
         writeInt(image)
         writeInt(sound)
+        writeInt(name)
+        writeInt(soundId)
     }
 
     companion object {
