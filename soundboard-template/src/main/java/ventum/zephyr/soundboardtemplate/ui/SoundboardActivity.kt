@@ -18,6 +18,7 @@ import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.InterstitialAd
 import com.google.android.gms.ads.MobileAds
 import jp.wasabeef.glide.transformations.BlurTransformation
+import ventum.zephyr.soundboardtemplate.BuildConfig
 import ventum.zephyr.soundboardtemplate.R
 import ventum.zephyr.soundboardtemplate.adapter.SoundboardPagerAdapter
 import ventum.zephyr.soundboardtemplate.listener.SoundItemActionListener
@@ -49,12 +50,16 @@ abstract class SoundboardActivity : AppCompatActivity(), SoundItemActionListener
     private fun initSoundPool() {
         soundPool = SoundPool.Builder().setAudioAttributes(
                 AudioAttributes.Builder()
-                        .setUsage(AudioAttributes.USAGE_GAME)
-                        .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                        .setUsage(getSoundPoolUsage())
+                        .setContentType(getSoundPoolContentType())
                         .build())
                 .setMaxStreams(10)
                 .build()
     }
+
+    protected open fun getSoundPoolUsage() = AudioAttributes.USAGE_GAME
+
+    protected open fun getSoundPoolContentType() = AudioAttributes.CONTENT_TYPE_SONIFICATION
 
     private fun setupAds() {
         MobileAds.initialize(this, getString(R.string.admob_app_id))
@@ -76,7 +81,7 @@ abstract class SoundboardActivity : AppCompatActivity(), SoundItemActionListener
     private fun onAdShowTrigger() = interstitialAd.let { if (it.isLoaded && ++clicksAdCounter == clicksToShowAd) it.show() }
 
     override fun onSoundItemClicked(item: SoundItem) {
-        onAdShowTrigger()
+        if (!BuildConfig.DEBUG) onAdShowTrigger()
         if (!isMultiStreamsEnable) soundPool.autoPause()
         soundPool.play(item.soundId, 1f, 1f, 1, 0, 0f)
     }
