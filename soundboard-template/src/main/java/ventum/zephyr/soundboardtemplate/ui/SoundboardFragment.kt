@@ -13,7 +13,6 @@ import ventum.zephyr.soundboardtemplate.adapter.SoundsAdapter
 import ventum.zephyr.soundboardtemplate.databinding.FragmentSoundboardBinding
 import ventum.zephyr.soundboardtemplate.listener.SoundItemActionListener
 import ventum.zephyr.soundboardtemplate.model.SoundItems
-import java.io.Serializable
 
 class SoundboardFragment : Fragment() {
 
@@ -25,7 +24,7 @@ class SoundboardFragment : Fragment() {
         private const val SOUND_ITEMS_KEY = "SOUND_ITEMS_KEY"
 
         fun newInstance(soundItems: SoundItems): SoundboardFragment {
-            return SoundboardFragment().apply { arguments?.putSerializable(SOUND_ITEMS_KEY, soundItems)}
+            return SoundboardFragment().apply { arguments = Bundle().apply {putSerializable(SOUND_ITEMS_KEY, soundItems)}}
         }
     }
 
