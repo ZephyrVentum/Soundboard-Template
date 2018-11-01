@@ -25,8 +25,7 @@ class SoundboardFragment : Fragment() {
         private const val SOUND_ITEMS_KEY = "SOUND_ITEMS_KEY"
 
         fun newInstance(soundItems: SoundItems): SoundboardFragment {
-            val args = Bundle().apply { putSerializable(SOUND_ITEMS_KEY, soundItems as Serializable) }
-            return SoundboardFragment().apply { arguments = args }
+            return SoundboardFragment().apply { arguments?.putSerializable(SOUND_ITEMS_KEY, soundItems)}
         }
     }
 
