@@ -5,7 +5,6 @@ import android.os.Parcelable
 import android.support.annotation.DrawableRes
 import android.support.annotation.RawRes
 import android.support.annotation.StringRes
-import java.io.Serializable
 
 class SoundItem(@DrawableRes val image: Int, @RawRes val sound: Int, @StringRes val name: Int = -1, val soundId: Int = -1) : Parcelable {
 
@@ -36,4 +35,16 @@ class SoundItem(@DrawableRes val image: Int, @RawRes val sound: Int, @StringRes 
     }
 }
 
-class SoundItems : ArrayList<SoundItem>(), Serializable
+class SoundItems() : ArrayList<SoundItem>(), Parcelable {
+    constructor(parcel: Parcel) : this()
+
+    override fun writeToParcel(dest: Parcel?, flags: Int) {}
+
+    override fun describeContents() = 0
+
+    companion object CREATOR : Parcelable.Creator<SoundItems> {
+        override fun createFromParcel(parcel: Parcel) = SoundItems(parcel)
+
+        override fun newArray(size: Int): Array<SoundItems?> = arrayOfNulls(size)
+    }
+}

@@ -1,6 +1,8 @@
 package ventum.zephyr.soundboardtemplate.ui
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.databinding.DataBindingUtil
 import android.graphics.PorterDuff
 import android.media.AudioAttributes
@@ -26,9 +28,13 @@ import ventum.zephyr.soundboardtemplate.model.SoundItem
 import ventum.zephyr.soundboardtemplate.model.SoundboardCategory
 import java.util.*
 
+const val STORAGE_NAME = "ventum.zephyr.soundboardtemplate.SHARED_PREFS"
+const val MULTI_STREAM = "STORAGE_NAME" + ".MULTI_STREAM"
+
 abstract class SoundboardActivity : AppCompatActivity(), SoundItemActionListener {
 
     private lateinit var binding: ventum.zephyr.soundboardtemplate.databinding.ActivitySoundboardBinding
+    private lateinit var sharedPreferences: SharedPreferences
     private lateinit var soundboardCategories: ArrayList<SoundboardCategory>
     private lateinit var interstitialAd: InterstitialAd
     protected lateinit var soundPool: SoundPool
@@ -39,6 +45,7 @@ abstract class SoundboardActivity : AppCompatActivity(), SoundItemActionListener
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_soundboard)
+        sharedPreferences = getSharedPreferences(STORAGE_NAME, Context.MODE_PRIVATE)
         initSoundPool()
         soundboardCategories = getSoundboardCategories()
         setupAds()
@@ -109,6 +116,12 @@ abstract class SoundboardActivity : AppCompatActivity(), SoundItemActionListener
         menuInflater.inflate(R.menu.menu, menu)
         (0 until menu.size()).forEach {
             menu.getItem(it).icon.setColorFilter(getToolbarItemsColor(), PorterDuff.Mode.SRC_ATOP)
+            if (menu.getItem(it).itemId == R.id.action_repeat) {
+                isMultiStreamsEnable = sharedPreferences.getBoolean(MULTI_STREAM, true)
+                if (!isMultiStreamsEnable) {
+                    menu.getItem(it).setIcon(R.drawable.ic_repeat_one_black_24dp)
+                }
+            }
         }
         return true
     }
@@ -126,6 +139,7 @@ abstract class SoundboardActivity : AppCompatActivity(), SoundItemActionListener
             }
             R.id.action_repeat -> {
                 isMultiStreamsEnable = !isMultiStreamsEnable
+                sharedPreferences.edit().putBoolean(MULTI_STREAM, isMultiStreamsEnable).apply()
                 item.setIcon(if (isMultiStreamsEnable) R.drawable.ic_repeat_black_24dp else R.drawable.ic_repeat_one_black_24dp)
             }
         }

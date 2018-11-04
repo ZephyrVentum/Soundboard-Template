@@ -12,6 +12,7 @@ import ventum.zephyr.soundboardtemplate.R
 import ventum.zephyr.soundboardtemplate.adapter.SoundsAdapter
 import ventum.zephyr.soundboardtemplate.databinding.FragmentSoundboardBinding
 import ventum.zephyr.soundboardtemplate.listener.SoundItemActionListener
+import ventum.zephyr.soundboardtemplate.model.SoundItem
 import ventum.zephyr.soundboardtemplate.model.SoundItems
 
 class SoundboardFragment : Fragment() {
@@ -24,7 +25,7 @@ class SoundboardFragment : Fragment() {
         private const val SOUND_ITEMS_KEY = "SOUND_ITEMS_KEY"
 
         fun newInstance(soundItems: SoundItems): SoundboardFragment {
-            return SoundboardFragment().apply { arguments = Bundle().apply {putSerializable(SOUND_ITEMS_KEY, soundItems)}}
+            return SoundboardFragment().apply { arguments = Bundle().apply {putParcelableArrayList(SOUND_ITEMS_KEY, soundItems)}}
         }
     }
 
@@ -36,7 +37,7 @@ class SoundboardFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         arguments?.let {
-            soundItems = it.getSerializable(SOUND_ITEMS_KEY) as SoundItems
+            soundItems = it.getParcelableArrayList<SoundItem>(SOUND_ITEMS_KEY) as SoundItems
             binding.soundboardRecycleView.adapter = SoundsAdapter(soundItems, soundItemActionListener)
             binding.soundboardRecycleView.layoutManager = GridLayoutManager(context, 2)
         }
