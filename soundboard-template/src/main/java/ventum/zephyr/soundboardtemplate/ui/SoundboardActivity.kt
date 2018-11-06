@@ -33,13 +33,14 @@ const val MULTI_STREAM = "STORAGE_NAME" + ".MULTI_STREAM"
 
 abstract class SoundboardActivity : AppCompatActivity(), SoundItemActionListener {
 
-    private lateinit var binding: ventum.zephyr.soundboardtemplate.databinding.ActivitySoundboardBinding
+    protected lateinit var binding: ventum.zephyr.soundboardtemplate.databinding.ActivitySoundboardBinding
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var soundboardCategories: ArrayList<SoundboardCategory>
     private lateinit var interstitialAd: InterstitialAd
     protected lateinit var soundPool: SoundPool
     private var clicksAdCounter = 0
-    private var clicksToShowAd = Random().nextInt(6) + 10
+    @Suppress("LeakingThis")
+    private var clicksToShowAd = getClickToAdsCount()
     private var isMultiStreamsEnable: Boolean = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -68,6 +69,10 @@ abstract class SoundboardActivity : AppCompatActivity(), SoundItemActionListener
 
     protected open fun getSoundPoolContentType() = AudioAttributes.CONTENT_TYPE_SONIFICATION
 
+    protected open fun getBlurRadius() = 22
+
+    protected open fun getClickToAdsCount() = Random().nextInt(6) + 10
+
     private fun setupAds() {
         MobileAds.initialize(this, getString(R.string.admob_app_id))
         binding.adView.loadAd(AdRequest.Builder().build())
@@ -76,7 +81,7 @@ abstract class SoundboardActivity : AppCompatActivity(), SoundItemActionListener
             adListener = object : AdListener() {
                 override fun onAdClosed() {
                     clicksAdCounter = 0
-                    clicksToShowAd = Random().nextInt(6) + 10
+                    clicksToShowAd = getClickToAdsCount()
                     interstitialAd.loadAd(AdRequest.Builder().build())
                 }
             }
@@ -94,7 +99,7 @@ abstract class SoundboardActivity : AppCompatActivity(), SoundItemActionListener
     }
 
     private fun setupBackgroundImage() = Glide.with(this).load(R.drawable.bg_main)
-            .apply(bitmapTransform(BlurTransformation(22)))
+            .apply(bitmapTransform(BlurTransformation(getBlurRadius())))
             .into(binding.bgImageView)
 
     private fun setupViewPager() {
