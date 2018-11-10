@@ -2,7 +2,7 @@
 Soundboard-Template - is the fast and easy way to create soundboard app by yourself.
 
     Keep in mind that this is an android template.
-To do this you should to complete a few steps: <span style=“color:red”> text </span>
+To do this you should to complete a few steps:
 
 * Find sounds that will be contains in your soundboard;
 * Provide short text description for sound buttons (optional);
@@ -18,6 +18,14 @@ that can help you to do this. Also you can use as an example that [application](
 based on Soundboard-Template.
 
 ## Configuration
+
+##### Stylize your soundboard
+To change soundboard color you should to rewrite existing color in *color.xml* main project file.
+To change background just add **bg_main** file into your drawable res folder.
+##### Configure ads tokens
+To provide tokens of your adMob ads you should to rewrite *strings.xml* file of your main project.
+##### Add sounds
+All sounds should be added into **raw** res folder. All sounds should be compatible with [SoundPool](https://developer.android.com/reference/android/media/SoundPool) audio manager.
 
 ## License
 Copyright 2018 Alexander Klimenko
