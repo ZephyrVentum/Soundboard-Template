@@ -30,6 +30,10 @@ class SoundsAdapter(private val soundItems: ArrayList<SoundItem>, val listener: 
 
         internal fun bind(itemSound: SoundItem) {
             setupImage(binding.imageRoundedImageView, itemSound.image)
+            binding.imageRoundedImageView.setOnLongClickListener {
+                listener.onSoundItemLongClicked(itemSound)
+                true
+            }
             binding.imageRoundedImageView.setOnClickListener { listener.onSoundItemClicked(itemSound) }
             binding.nameTextView.text = if (itemSound.name >= 0) binding.root.context.getString(itemSound.name) else ""
         }

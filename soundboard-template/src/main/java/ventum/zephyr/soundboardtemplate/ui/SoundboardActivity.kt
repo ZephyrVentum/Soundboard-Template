@@ -1,18 +1,24 @@
 package ventum.zephyr.soundboardtemplate.ui
 
+import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.pm.PackageManager
 import android.databinding.DataBindingUtil
 import android.graphics.PorterDuff
 import android.media.AudioAttributes
 import android.media.SoundPool
 import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
+import android.support.annotation.RawRes
+import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions.bitmapTransform
 import com.google.android.gms.ads.AdListener
@@ -23,17 +29,21 @@ import jp.wasabeef.glide.transformations.BlurTransformation
 import ventum.zephyr.soundboardtemplate.BuildConfig
 import ventum.zephyr.soundboardtemplate.R
 import ventum.zephyr.soundboardtemplate.adapter.SoundboardPagerAdapter
+import ventum.zephyr.soundboardtemplate.databinding.ActivitySoundboardBinding
 import ventum.zephyr.soundboardtemplate.listener.SoundItemActionListener
 import ventum.zephyr.soundboardtemplate.model.SoundItem
 import ventum.zephyr.soundboardtemplate.model.SoundboardCategory
+import java.io.File
+import java.io.FileOutputStream
 import java.util.*
 
 const val STORAGE_NAME = "ventum.zephyr.soundboardtemplate.SHARED_PREFS"
 const val MULTI_STREAM = "STORAGE_NAME" + ".MULTI_STREAM"
+private const val WRITE_EXTERNAL_STORAGE_PERMISSION_REQUEST_CODE = 101
 
 abstract class SoundboardActivity : AppCompatActivity(), SoundItemActionListener {
 
-    protected lateinit var binding: ventum.zephyr.soundboardtemplate.databinding.ActivitySoundboardBinding
+    protected lateinit var binding: ActivitySoundboardBinding
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var soundboardCategories: ArrayList<SoundboardCategory>
     private lateinit var interstitialAd: InterstitialAd
@@ -98,6 +108,51 @@ abstract class SoundboardActivity : AppCompatActivity(), SoundItemActionListener
         soundPool.play(item.soundId, 1f, 1f, 1, 0, 0f)
     }
 
+    override fun onSoundItemLongClicked(item: SoundItem) {
+        if (isPermissionToWriteExternalStorageGranted()) {
+            prepareToSaveSound(item.sound)
+        } else {
+            requestPermissionsToExternalStorage()
+        }
+    }
+
+    private fun prepareToSaveSound(@RawRes soundRes: Int) {
+        val path = Environment.getExternalStorageDirectory().path + File.separator + getString(R.string.app_name)
+        val dir = File(path)
+        if (dir.mkdirs() || dir.isDirectory) {
+            saveSoundToExternalStorage(soundRes, path + File.separator + resources.getResourceEntryName(soundRes) + ".mp3")
+        }
+    }
+
+    private fun saveSoundToExternalStorage(@RawRes soundRes: Int, path: String) {
+        val input = resources.openRawResource(soundRes)
+        val output = FileOutputStream(path)
+        output.write(input.readBytes())
+        input.close()
+        output.close()
+        interstitialAd.let { if (it.isLoaded) it.show() }
+        Toast.makeText(this, "Saved!\n$path", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun requestPermissionsToExternalStorage() {
+        ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), WRITE_EXTERNAL_STORAGE_PERMISSION_REQUEST_CODE)
+    }
+
+    private fun isPermissionToWriteExternalStorageGranted() =
+            ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        when (requestCode) {
+            WRITE_EXTERNAL_STORAGE_PERMISSION_REQUEST_CODE -> {
+                val isPermissionGranted = grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED
+                Toast.makeText(this,
+                        if (isPermissionGranted) "Successful! Long click to save sound!" else "Something went wrong!",
+                        Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
     private fun setupBackgroundImage() = Glide.with(this).load(R.drawable.bg_main)
             .apply(bitmapTransform(BlurTransformation(getBlurRadius())))
             .into(binding.bgImageView)
@@ -146,6 +201,7 @@ abstract class SoundboardActivity : AppCompatActivity(), SoundItemActionListener
                 isMultiStreamsEnable = !isMultiStreamsEnable
                 sharedPreferences.edit().putBoolean(MULTI_STREAM, isMultiStreamsEnable).apply()
                 item.setIcon(if (isMultiStreamsEnable) R.drawable.ic_repeat_black_24dp else R.drawable.ic_repeat_one_black_24dp)
+                handled = true
             }
         }
         return handled || super.onOptionsItemSelected(item)
