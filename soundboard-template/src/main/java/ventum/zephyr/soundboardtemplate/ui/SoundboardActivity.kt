@@ -73,6 +73,16 @@ abstract class SoundboardActivity : AppCompatActivity(), SoundItemActionListener
                         .build())
                 .setMaxStreams(10)
                 .build()
+        soundPool.setOnLoadCompleteListener { soundPool, sampleId, status ->
+            run {
+                if (status == 0) {
+                    if (!BuildConfig.DEBUG) onAdShowTrigger()
+                    if (!isMultiStreamsEnable) soundPool.autoPause()
+                    soundPool.play(sampleId, 1f, 1f, 1, 0, 1f)
+                    soundPool.unload(sampleId)
+                }
+            }
+        }
     }
 
     protected open fun getSoundPoolUsage() = AudioAttributes.USAGE_GAME
@@ -103,9 +113,7 @@ abstract class SoundboardActivity : AppCompatActivity(), SoundItemActionListener
     private fun onAdShowTrigger() = interstitialAd.let { if (it.isLoaded && ++clicksAdCounter == clicksToShowAd) it.show() }
 
     override fun onSoundItemClicked(item: SoundItem) {
-        if (!BuildConfig.DEBUG) onAdShowTrigger()
-        if (!isMultiStreamsEnable) soundPool.autoPause()
-        soundPool.play(item.soundId, 1f, 1f, 1, 0, 1f)
+        soundPool.load(this, item.sound, 1)
     }
 
     override fun onSoundItemLongClicked(item: SoundItem) {
