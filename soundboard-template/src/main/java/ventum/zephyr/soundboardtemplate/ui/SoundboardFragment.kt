@@ -25,7 +25,7 @@ class SoundboardFragment : Fragment() {
         private const val SOUND_ITEMS_KEY = "SOUND_ITEMS_KEY"
 
         fun newInstance(soundItems: SoundItems): SoundboardFragment {
-            return SoundboardFragment().apply { arguments = Bundle().apply {putParcelableArrayList(SOUND_ITEMS_KEY, soundItems)}}
+            return SoundboardFragment().apply { arguments = Bundle().apply { putParcelableArrayList(SOUND_ITEMS_KEY, soundItems) } }
         }
     }
 
@@ -39,7 +39,7 @@ class SoundboardFragment : Fragment() {
         arguments?.let {
             soundItems = it.getParcelableArrayList<SoundItem>(SOUND_ITEMS_KEY) as SoundItems
             binding.soundboardRecycleView.adapter = SoundsAdapter(soundItems, soundItemActionListener)
-            binding.soundboardRecycleView.layoutManager = GridLayoutManager(context, 2)
+            binding.soundboardRecycleView.layoutManager = GridLayoutManager(context, resources.getInteger(R.integer.span_count))
         }
     }
 
