@@ -105,7 +105,7 @@ abstract class SoundboardActivity : AppCompatActivity(), SoundItemActionListener
     override fun onSoundItemClicked(item: SoundItem) {
         if (!BuildConfig.DEBUG) onAdShowTrigger()
         if (!isMultiStreamsEnable) soundPool.autoPause()
-        soundPool.play(item.soundId, 1f, 1f, 1, 0, 0f)
+        soundPool.play(item.soundId, 1f, 1f, 1, 0, 1f)
     }
 
     override fun onSoundItemLongClicked(item: SoundItem) {
