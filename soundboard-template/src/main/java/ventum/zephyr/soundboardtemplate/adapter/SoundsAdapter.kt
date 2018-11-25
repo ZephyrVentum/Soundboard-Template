@@ -35,6 +35,7 @@ class SoundsAdapter(private val soundItems: ArrayList<SoundItem>, val listener: 
                 true
             }
             binding.imageRoundedImageView.setOnClickListener { listener.onSoundItemClicked(itemSound) }
+            binding.nameTextView.textSize = 17f;
             binding.nameTextView.text = if (itemSound.name >= 0) binding.root.context.getString(itemSound.name) else ""
         }
 
