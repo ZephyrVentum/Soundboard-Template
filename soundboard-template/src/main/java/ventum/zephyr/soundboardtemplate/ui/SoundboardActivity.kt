@@ -173,7 +173,7 @@ abstract class SoundboardActivity : AppCompatActivity(), SoundItemActionListener
     private fun setupToolbar() {
         setSupportActionBar(binding.toolbar)
         supportActionBar.let {
-            it?.title = getString(R.string.app_name)
+            it?.title = getString(R.string.app_label)
             binding.toolbar.setTitleTextColor(getToolbarItemsColor())
         }
     }
