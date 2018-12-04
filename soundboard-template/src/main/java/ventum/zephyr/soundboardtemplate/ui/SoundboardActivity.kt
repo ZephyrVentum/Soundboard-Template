@@ -9,6 +9,7 @@ import android.databinding.DataBindingUtil
 import android.graphics.PorterDuff
 import android.media.AudioAttributes
 import android.media.AudioManager
+import android.media.MediaPlayer
 import android.media.SoundPool
 import android.net.Uri
 import android.os.Bundle
@@ -49,6 +50,7 @@ abstract class SoundboardActivity : AppCompatActivity(), SoundItemActionListener
     private lateinit var soundboardCategories: ArrayList<SoundboardCategory>
     private lateinit var interstitialAd: InterstitialAd
     protected lateinit var soundPool: SoundPool
+    protected var mediaPlayer: MediaPlayer = MediaPlayer()
     private var clicksAdCounter = 0
     @Suppress("LeakingThis")
     private var clicksToShowAd = getClickToAdsCount()
@@ -79,7 +81,10 @@ abstract class SoundboardActivity : AppCompatActivity(), SoundItemActionListener
             run {
                 if (status == 0) {
                     if (!BuildConfig.DEBUG) onAdShowTrigger()
-                    if (!isMultiStreamsEnable) soundPool.autoPause()
+                    if (!isMultiStreamsEnable) {
+                        soundPool.autoPause()
+                        mediaPlayer.release()
+                    }
                     soundPool.play(sampleId, 1f, 1f, 1, 0, 1f)
                     soundPool.unload(sampleId)
                 }
@@ -115,7 +120,19 @@ abstract class SoundboardActivity : AppCompatActivity(), SoundItemActionListener
     private fun onAdShowTrigger() = interstitialAd.let { if (it.isLoaded && ++clicksAdCounter == clicksToShowAd) it.show() }
 
     override fun onSoundItemClicked(item: SoundItem) {
-        soundPool.load(this, item.sound, 1)
+        if (item.isLongSound) {
+            mediaPlayer.release()
+            mediaPlayer = MediaPlayer.create(this, item.sound)
+            mediaPlayer.start()
+        } else {
+            soundPool.load(this, item.sound, 1)
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        soundPool.autoPause()
+        mediaPlayer.release()
     }
 
     override fun onSoundItemLongClicked(item: SoundItem) {

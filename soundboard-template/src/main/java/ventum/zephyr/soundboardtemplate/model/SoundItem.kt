@@ -6,9 +6,11 @@ import android.support.annotation.DrawableRes
 import android.support.annotation.RawRes
 import android.support.annotation.StringRes
 
-class SoundItem(@DrawableRes val image: Int, @RawRes val sound: Int, @StringRes val name: Int = -1) : Parcelable {
+class SoundItem(@DrawableRes val image: Int, @RawRes val sound: Int, @StringRes val name: Int = -1, val isLongSound: Boolean = false) : Parcelable {
 
     constructor(@DrawableRes image: Int, @RawRes sound: Int) : this(image, sound, -1)
+
+    constructor(@DrawableRes image: Int, @RawRes sound: Int, isLongSound: Boolean) : this(image, sound, -1, isLongSound)
 
     constructor(source: Parcel) : this(
             source.readInt(),
