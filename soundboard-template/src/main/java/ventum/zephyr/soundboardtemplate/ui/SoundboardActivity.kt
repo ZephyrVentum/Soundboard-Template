@@ -122,6 +122,9 @@ abstract class SoundboardActivity : AppCompatActivity(), SoundItemActionListener
     override fun onSoundItemClicked(item: SoundItem) {
         if (item.isLongSound) {
             mediaPlayer.release()
+            if (!isMultiStreamsEnable) {
+                soundPool.autoPause()
+            }
             mediaPlayer = MediaPlayer.create(this, item.sound)
             mediaPlayer.start()
         } else {
