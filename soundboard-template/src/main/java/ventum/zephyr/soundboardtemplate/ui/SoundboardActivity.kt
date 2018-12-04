@@ -81,10 +81,14 @@ abstract class SoundboardActivity : AppCompatActivity(), SoundItemActionListener
                     if (!BuildConfig.DEBUG) onAdShowTrigger()
                     if (!isMultiStreamsEnable) soundPool.autoPause()
                     soundPool.play(sampleId, 1f, 1f, 1, 0, 1f)
-                    soundPool.unload(sampleId)
                 }
             }
         }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        soundPool.release()
     }
 
     protected open fun getSoundPoolUsage() = AudioAttributes.USAGE_GAME
