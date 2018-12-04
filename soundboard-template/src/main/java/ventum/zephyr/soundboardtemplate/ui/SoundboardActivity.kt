@@ -59,7 +59,6 @@ abstract class SoundboardActivity : AppCompatActivity(), SoundItemActionListener
         volumeControlStream = AudioManager.STREAM_MUSIC;
         binding = DataBindingUtil.setContentView(this, R.layout.activity_soundboard)
         sharedPreferences = getSharedPreferences(STORAGE_NAME, Context.MODE_PRIVATE)
-        initSoundPool()
         soundboardCategories = getSoundboardCategories()
         setupAds()
         setupToolbar()
@@ -84,6 +83,11 @@ abstract class SoundboardActivity : AppCompatActivity(), SoundItemActionListener
                 }
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        initSoundPool()
     }
 
     override fun onPause() {
