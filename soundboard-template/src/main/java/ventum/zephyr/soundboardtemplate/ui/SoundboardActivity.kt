@@ -8,6 +8,7 @@ import android.content.pm.PackageManager
 import android.databinding.DataBindingUtil
 import android.graphics.PorterDuff
 import android.media.AudioAttributes
+import android.media.AudioManager
 import android.media.SoundPool
 import android.net.Uri
 import android.os.Bundle
@@ -55,6 +56,7 @@ abstract class SoundboardActivity : AppCompatActivity(), SoundItemActionListener
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        volumeControlStream = AudioManager.STREAM_MUSIC;
         binding = DataBindingUtil.setContentView(this, R.layout.activity_soundboard)
         sharedPreferences = getSharedPreferences(STORAGE_NAME, Context.MODE_PRIVATE)
         initSoundPool()

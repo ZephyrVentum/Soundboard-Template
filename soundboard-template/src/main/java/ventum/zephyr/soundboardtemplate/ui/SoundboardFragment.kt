@@ -33,6 +33,7 @@ class SoundboardFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_soundboard, container, false)
+        retainInstance = true
         return binding.root
     }
 
