@@ -59,6 +59,7 @@ abstract class SoundboardActivity : AppCompatActivity(), SoundItemActionListener
         volumeControlStream = AudioManager.STREAM_MUSIC;
         binding = DataBindingUtil.setContentView(this, R.layout.activity_soundboard)
         sharedPreferences = getSharedPreferences(STORAGE_NAME, Context.MODE_PRIVATE)
+        initSoundPool()
         soundboardCategories = getSoundboardCategories()
         setupAds()
         setupToolbar()
@@ -80,19 +81,10 @@ abstract class SoundboardActivity : AppCompatActivity(), SoundItemActionListener
                     if (!BuildConfig.DEBUG) onAdShowTrigger()
                     if (!isMultiStreamsEnable) soundPool.autoPause()
                     soundPool.play(sampleId, 1f, 1f, 1, 0, 1f)
+                    soundPool.unload(sampleId)
                 }
             }
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        initSoundPool()
-    }
-
-    override fun onPause() {
-        super.onPause()
-        soundPool.release()
     }
 
     protected open fun getSoundPoolUsage() = AudioAttributes.USAGE_GAME
