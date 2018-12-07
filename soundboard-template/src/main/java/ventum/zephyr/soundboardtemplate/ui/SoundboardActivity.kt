@@ -189,6 +189,7 @@ abstract class SoundboardActivity : AppCompatActivity(), SoundItemActionListener
 
     private fun setupViewPager() {
         binding.viewPager.adapter = SoundboardPagerAdapter(supportFragmentManager, soundboardCategories)
+        binding.viewPager.offscreenPageLimit = soundboardCategories.size
         binding.tabLayout.setupWithViewPager(binding.viewPager)
     }
 
