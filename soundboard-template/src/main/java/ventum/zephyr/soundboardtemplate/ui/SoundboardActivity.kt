@@ -102,7 +102,6 @@ abstract class SoundboardActivity : AppCompatActivity(), SoundItemActionListener
 
     private fun setupAds() {
         MobileAds.initialize(this, getString(R.string.admob_app_id))
-        binding.adView.loadAd(AdRequest.Builder().build())
         interstitialAd = InterstitialAd(this).apply {
             adUnitId = getString(R.string.admob_interstitial_unit_id)
             adListener = object : AdListener() {

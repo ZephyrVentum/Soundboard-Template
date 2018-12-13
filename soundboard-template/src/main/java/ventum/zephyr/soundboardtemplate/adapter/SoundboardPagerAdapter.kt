@@ -12,7 +12,8 @@ class SoundboardPagerAdapter(fm: FragmentManager,
 
     override fun getCount(): Int = soundboardCategories.size
 
-    override fun getItem(position: Int): Fragment = SoundboardFragment.newInstance(soundboardCategories[position].soundItems)
+    override fun getItem(position: Int): Fragment =
+            SoundboardFragment.newInstance(soundboardCategories[position].soundItems, soundboardCategories[position].adsId)
 
     override fun getPageTitle(position: Int): CharSequence? = soundboardCategories[position].name
 }
