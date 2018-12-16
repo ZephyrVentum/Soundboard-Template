@@ -205,13 +205,13 @@ abstract class SoundboardActivity : AppCompatActivity(), SoundItemActionListener
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu, menu)
         (0 until menu.size()).forEach {
-            menu.getItem(it).icon.setColorFilter(getToolbarItemsColor(), PorterDuff.Mode.SRC_ATOP)
             if (menu.getItem(it).itemId == R.id.action_repeat) {
                 isMultiStreamsEnable = sharedPreferences.getBoolean(MULTI_STREAM, true)
                 if (!isMultiStreamsEnable) {
                     menu.getItem(it).setIcon(R.drawable.ic_repeat_one_black_24dp)
                 }
             }
+            menu.getItem(it).icon.setColorFilter(getToolbarItemsColor(), PorterDuff.Mode.SRC_ATOP)
         }
         return true
     }
