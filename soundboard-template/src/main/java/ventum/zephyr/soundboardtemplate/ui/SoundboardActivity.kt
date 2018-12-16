@@ -231,6 +231,7 @@ abstract class SoundboardActivity : AppCompatActivity(), SoundItemActionListener
                 isMultiStreamsEnable = !isMultiStreamsEnable
                 sharedPreferences.edit().putBoolean(MULTI_STREAM, isMultiStreamsEnable).apply()
                 item.setIcon(if (isMultiStreamsEnable) R.drawable.ic_repeat_black_24dp else R.drawable.ic_repeat_one_black_24dp)
+                        .icon.setColorFilter(getToolbarItemsColor(), PorterDuff.Mode.SRC_ATOP)
                 handled = true
             }
         }
