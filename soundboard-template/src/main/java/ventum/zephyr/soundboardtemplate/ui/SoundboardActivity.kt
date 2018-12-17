@@ -182,9 +182,15 @@ abstract class SoundboardActivity : AppCompatActivity(), SoundItemActionListener
         }
     }
 
-    private fun setupBackgroundImage() = Glide.with(this).load(R.drawable.bg_main)
-            .apply(bitmapTransform(BlurTransformation(getBlurRadius())))
-            .into(binding.bgImageView)
+    private fun setupBackgroundImage() {
+        if (getBlurRadius() > 0) {
+            Glide.with(this).load(R.drawable.bg_main)
+                    .apply(bitmapTransform(BlurTransformation(getBlurRadius())))
+                    .into(binding.bgImageView)
+        } else {
+            binding.bgImageView.setImageDrawable(getDrawable(R.drawable.bg_main))
+        }
+    }
 
     private fun setupViewPager() {
         binding.viewPager.adapter = SoundboardPagerAdapter(supportFragmentManager, soundboardCategories)
