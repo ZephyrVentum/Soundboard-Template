@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.support.constraint.ConstraintLayout
 import android.support.constraint.ConstraintSet
 import android.support.v4.app.Fragment
-import android.support.v4.content.ContextCompat
 import android.support.v7.widget.GridLayoutManager
 import android.view.LayoutInflater
 import android.view.View
@@ -47,29 +46,37 @@ class SoundboardFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        arguments?.let {
-            soundItems = it.getParcelableArrayList<SoundItem>(SOUND_ITEMS_KEY) as SoundItems
+        arguments?.let { arguments ->
+            soundItems = savedInstanceState?.let {
+                it.getParcelableArrayList<SoundItem>(SOUND_ITEMS_KEY) as SoundItems
+            } ?: arguments.getParcelableArrayList<SoundItem>(SOUND_ITEMS_KEY) as SoundItems
             binding.soundboardRecycleView.adapter = SoundsAdapter(soundItems, soundItemActionListener)
             binding.soundboardRecycleView.layoutManager = GridLayoutManager(context, resources.getInteger(R.integer.span_count))
-            createAdsBanner(view, it.getString(ADS_ID_KEY))
+            createAdsBanner(arguments.getString(ADS_ID_KEY))
         }
     }
 
-    private fun createAdsBanner(view: View, adsId: String?) {
-        if (view is ConstraintLayout) {
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putParcelableArrayList(SOUND_ITEMS_KEY, soundItems)
+    }
+
+    private fun createAdsBanner(adsId: String?) {
+        if (binding.root is ConstraintLayout) {
+            val rootView: ConstraintLayout = binding.root as ConstraintLayout
             val adView = AdView(context)
             adView.adSize = AdSize.BANNER
             adView.adUnitId = adsId
             adView.id = View.generateViewId()
             adView.loadAd(AdRequest.Builder().build())
-            view.addView(adView)
+            rootView.addView(adView)
 
             val constraintSet = ConstraintSet()
-            constraintSet.clone(view)
+            constraintSet.clone(rootView)
             constraintSet.connect(adView.id, ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM, 0)
             constraintSet.connect(adView.id, ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START, 0)
             constraintSet.connect(adView.id, ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END, 0)
-            constraintSet.applyTo(view)
+            constraintSet.applyTo(rootView)
         }
     }
 
