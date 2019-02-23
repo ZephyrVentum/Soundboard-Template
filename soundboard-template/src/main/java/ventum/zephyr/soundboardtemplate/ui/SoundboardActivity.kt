@@ -1,6 +1,7 @@
 package ventum.zephyr.soundboardtemplate.ui
 
 import android.Manifest
+import android.app.DialogFragment
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -17,6 +18,7 @@ import android.os.Environment
 import android.support.annotation.RawRes
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
+import android.support.v4.content.FileProvider
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
@@ -43,7 +45,8 @@ const val STORAGE_NAME = "ventum.zephyr.soundboardtemplate.SHARED_PREFS"
 const val MULTI_STREAM = "STORAGE_NAME" + ".MULTI_STREAM"
 private const val WRITE_EXTERNAL_STORAGE_PERMISSION_REQUEST_CODE = 101
 
-abstract class SoundboardActivity : AppCompatActivity(), SoundItemActionListener {
+abstract class SoundboardActivity : AppCompatActivity(), SoundItemActionListener,
+        ShareAndSaveDialogFragment.ShareAndSaveDialogListener {
 
     protected lateinit var binding: ActivitySoundboardBinding
     private lateinit var sharedPreferences: SharedPreferences
@@ -139,10 +142,20 @@ abstract class SoundboardActivity : AppCompatActivity(), SoundItemActionListener
 
     override fun onSoundItemLongClicked(item: SoundItem) {
         if (isPermissionToWriteExternalStorageGranted()) {
-            prepareToSaveSound(item.sound)
+            showShareAndSaveDialog(item)
         } else {
             requestPermissionsToExternalStorage()
         }
+    }
+
+    override fun onSaveButtonClick(dialog: android.support.v4.app.DialogFragment) {
+        val shareAndSaveDialog = dialog as ShareAndSaveDialogFragment
+        prepareToSaveSound(shareAndSaveDialog.soundItem!!.sound)
+    }
+
+    override fun onShareButtonClick(dialog: android.support.v4.app.DialogFragment) {
+        val shareAndSaveDialog = dialog as ShareAndSaveDialogFragment
+        shareSoundFile(shareAndSaveDialog.soundItem!!.sound)
     }
 
     private fun prepareToSaveSound(@RawRes soundRes: Int) {
@@ -156,11 +169,34 @@ abstract class SoundboardActivity : AppCompatActivity(), SoundItemActionListener
     private fun saveSoundToExternalStorage(@RawRes soundRes: Int, path: String) {
         val input = resources.openRawResource(soundRes)
         val output = FileOutputStream(path)
-        output.write(input.readBytes())
+        val soundData = input.readBytes()
+        output.write(soundData)
         input.close()
         output.close()
         interstitialAd.let { if (it.isLoaded) it.show() }
         Toast.makeText(this, "Saved!\n$path", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun shareSoundFile(@RawRes soundRes: Int){
+        val input = resources.openRawResource(soundRes)
+        val soundData = input.readBytes()
+        val soundPath = File(this.applicationContext.filesDir, "sounds")
+        val newFile = File(soundPath, resources.getResourceEntryName(soundRes) + ".mp3")
+        soundPath.mkdirs()
+        newFile.createNewFile()
+        newFile.writeBytes(soundData)
+
+        val uri = FileProvider.getUriForFile(
+                this,
+                getString(R.string.share_authority),
+                newFile)
+        val shareIntent: Intent = Intent().apply {
+            action = Intent.ACTION_SEND
+            putExtra(Intent.EXTRA_STREAM, uri)
+            type = "audio/mp3"
+        }
+        shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        startActivity(Intent.createChooser(shareIntent, getString(R.string.share_sound)))
     }
 
     private fun requestPermissionsToExternalStorage() {
@@ -251,6 +287,12 @@ abstract class SoundboardActivity : AppCompatActivity(), SoundItemActionListener
             type = "text/plain"
         }
         startActivity(Intent.createChooser(sendIntent, getString(R.string.share_title)))
+    }
+
+    private fun showShareAndSaveDialog(item: SoundItem){
+        val dialog = ShareAndSaveDialogFragment()
+        dialog.soundItem = item
+        dialog.show(supportFragmentManager, "ShareAndSaveDialogFragment")
     }
 
     private fun showRateUs() {

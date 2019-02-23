@@ -9,4 +9,9 @@
     <string name="share_menu">Share</string>
     <string name="rate_us_menu">Rate us!</string>
     <string name="repeat_menu">Repeat</string>
+    <string name="share_sound">Share this sound file with:</string>
+    <string name="share_authority">ventum.zephyr.soundboardtemplate</string>
+    <string name="select_activity">Select activity:</string>
+    <string name="activity_share">Share</string>
+    <string name="activity_save">Save on disk</string>
 </resources>
