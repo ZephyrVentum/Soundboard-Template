@@ -1,13 +1,11 @@
 package ventum.zephyr.soundboardtemplate.ui
 
-import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
 import android.support.v4.app.DialogFragment
-import android.util.Log
 import ventum.zephyr.soundboardtemplate.R
 import ventum.zephyr.soundboardtemplate.model.SoundItem
 
@@ -27,7 +25,7 @@ class ShareAndSaveDialogFragment : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val builder = AlertDialog.Builder(activity)
         val items = arrayOf(getString(R.string.activity_share), getString(R.string.activity_save))
-        builder.setTitle(R.string.select_activity)
+        builder.setTitle(R.string.sound_action_dialog_title)
                 .setItems(items, DialogInterface.OnClickListener { dialog, which ->
                     if (which == 0){
                         listener!!.onShareButtonClick(this)

@@ -188,7 +188,7 @@ abstract class SoundboardActivity : AppCompatActivity(), SoundItemActionListener
 
         val uri = FileProvider.getUriForFile(
                 this,
-                getString(R.string.share_authority),
+                BuildConfig.APPLICATION_ID,
                 newFile)
         val shareIntent: Intent = Intent().apply {
             action = Intent.ACTION_SEND
