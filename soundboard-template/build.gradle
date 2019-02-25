@@ -10,17 +10,16 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        resValue "string", "admob_app_id", "ca-app-pub-3940256099942544~3347511713"
     }
     buildTypes {
         debug {
             testCoverageEnabled true
             debuggable true
-            resValue "string", "admob_app_id", "ca-app-pub-3940256099942544~3347511713"
         }
         release {
             debuggable false
             minifyEnabled false
-            resValue "string", "admob_app_id", "ca-app-pub-9581992838845527~8791449735"
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
