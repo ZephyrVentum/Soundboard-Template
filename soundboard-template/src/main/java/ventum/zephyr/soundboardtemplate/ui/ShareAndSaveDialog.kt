@@ -10,11 +10,9 @@ import ventum.zephyr.soundboardtemplate.R
 import ventum.zephyr.soundboardtemplate.model.SoundItem
 
 
-
-
 class ShareAndSaveDialogFragment : DialogFragment() {
 
-    interface ShareAndSaveDialogListener{
+    interface ShareAndSaveDialogListener {
         fun onShareButtonClick(dialog: DialogFragment)
         fun onSaveButtonClick(dialog: DialogFragment)
     }
@@ -27,10 +25,9 @@ class ShareAndSaveDialogFragment : DialogFragment() {
         val items = arrayOf(getString(R.string.activity_share), getString(R.string.activity_save))
         builder.setTitle(R.string.sound_action_dialog_title)
                 .setItems(items, DialogInterface.OnClickListener { dialog, which ->
-                    if (which == 0){
+                    if (which == 0) {
                         listener!!.onShareButtonClick(this)
-                    }
-                    else if (which == 1){
+                    } else if (which == 1) {
                         listener!!.onSaveButtonClick(this)
                     }
                 })
