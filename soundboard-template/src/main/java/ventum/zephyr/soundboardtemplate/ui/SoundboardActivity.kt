@@ -1,12 +1,10 @@
 package ventum.zephyr.soundboardtemplate.ui
 
 import android.Manifest
-import android.app.DialogFragment
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
-import android.databinding.DataBindingUtil
 import android.graphics.PorterDuff
 import android.media.AudioAttributes
 import android.media.AudioManager
@@ -15,21 +13,19 @@ import android.media.SoundPool
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
-import android.support.annotation.RawRes
-import android.support.v4.app.ActivityCompat
-import android.support.v4.content.ContextCompat
-import android.support.v4.content.FileProvider
-import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions.bitmapTransform
+import androidx.annotation.RawRes
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
+import androidx.databinding.DataBindingUtil
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.InterstitialAd
 import com.google.android.gms.ads.MobileAds
-import jp.wasabeef.glide.transformations.BlurTransformation
 import ventum.zephyr.soundboardtemplate.BuildConfig
 import ventum.zephyr.soundboardtemplate.R
 import ventum.zephyr.soundboardtemplate.adapter.SoundboardPagerAdapter
@@ -64,11 +60,14 @@ abstract class SoundboardActivity : AppCompatActivity(), SoundItemActionListener
         volumeControlStream = AudioManager.STREAM_MUSIC;
         binding = DataBindingUtil.setContentView(this, R.layout.activity_soundboard)
         sharedPreferences = getSharedPreferences(STORAGE_NAME, Context.MODE_PRIVATE)
+        binding.bgImageView.apply {
+            setImageDrawable(getDrawable(R.drawable.bg_main)?.mutate())
+            setColorFilter(ContextCompat.getColor(context, R.color.bg_tint_color), PorterDuff.Mode.SRC_ATOP)
+        }
         initSoundPool()
         soundboardCategories = getSoundboardCategories()
         setupAds()
         setupToolbar()
-        setupBackgroundImage()
         setupViewPager()
     }
 
@@ -98,8 +97,6 @@ abstract class SoundboardActivity : AppCompatActivity(), SoundItemActionListener
     protected open fun getSoundPoolUsage() = AudioAttributes.USAGE_GAME
 
     protected open fun getSoundPoolContentType() = AudioAttributes.CONTENT_TYPE_SONIFICATION
-
-    protected open fun getBlurRadius() = 22
 
     protected open fun getClickToAdsCount() = Random().nextInt(6) + 10
 
@@ -148,12 +145,12 @@ abstract class SoundboardActivity : AppCompatActivity(), SoundItemActionListener
         }
     }
 
-    override fun onSaveButtonClick(dialog: android.support.v4.app.DialogFragment) {
+    override fun onSaveButtonClick(dialog: androidx.fragment.app.DialogFragment) {
         val shareAndSaveDialog = dialog as ShareAndSaveDialogFragment
         prepareToSaveSound(shareAndSaveDialog.soundItem!!.sound)
     }
 
-    override fun onShareButtonClick(dialog: android.support.v4.app.DialogFragment) {
+    override fun onShareButtonClick(dialog: androidx.fragment.app.DialogFragment) {
         val shareAndSaveDialog = dialog as ShareAndSaveDialogFragment
         shareSoundFile(shareAndSaveDialog.soundItem!!.sound)
     }
@@ -177,7 +174,7 @@ abstract class SoundboardActivity : AppCompatActivity(), SoundItemActionListener
         Toast.makeText(this, "Saved!\n$path", Toast.LENGTH_SHORT).show()
     }
 
-    private fun shareSoundFile(@RawRes soundRes: Int){
+    private fun shareSoundFile(@RawRes soundRes: Int) {
         val input = resources.openRawResource(soundRes)
         val soundData = input.readBytes()
         val soundPath = File(this.applicationContext.filesDir, "sounds")
@@ -215,16 +212,6 @@ abstract class SoundboardActivity : AppCompatActivity(), SoundItemActionListener
                         if (isPermissionGranted) "Successful! Long click to save sound!" else "Something went wrong!",
                         Toast.LENGTH_SHORT).show()
             }
-        }
-    }
-
-    private fun setupBackgroundImage() {
-        if (getBlurRadius() > 0) {
-            Glide.with(this).load(R.drawable.bg_main)
-                    .apply(bitmapTransform(BlurTransformation(getBlurRadius())))
-                    .into(binding.bgImageView)
-        } else {
-            binding.bgImageView.setImageDrawable(getDrawable(R.drawable.bg_main))
         }
     }
 
@@ -289,7 +276,7 @@ abstract class SoundboardActivity : AppCompatActivity(), SoundItemActionListener
         startActivity(Intent.createChooser(sendIntent, getString(R.string.share_title)))
     }
 
-    private fun showShareAndSaveDialog(item: SoundItem){
+    private fun showShareAndSaveDialog(item: SoundItem) {
         val dialog = ShareAndSaveDialogFragment()
         dialog.soundItem = item
         dialog.show(supportFragmentManager, "ShareAndSaveDialogFragment")

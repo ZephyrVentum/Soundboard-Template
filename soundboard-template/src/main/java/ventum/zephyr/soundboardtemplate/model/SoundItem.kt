@@ -2,9 +2,9 @@ package ventum.zephyr.soundboardtemplate.model
 
 import android.os.Parcel
 import android.os.Parcelable
-import android.support.annotation.DrawableRes
-import android.support.annotation.RawRes
-import android.support.annotation.StringRes
+import androidx.annotation.DrawableRes
+import androidx.annotation.RawRes
+import androidx.annotation.StringRes
 
 class SoundItem(@DrawableRes val image: Int, @RawRes val sound: Int, @StringRes val name: Int = -1, val isLongSound: Boolean = false) : Parcelable {
 

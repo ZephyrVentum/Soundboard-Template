@@ -1,12 +1,12 @@
 package ventum.zephyr.soundboardtemplate.ui
 
 import android.content.Context
-import android.databinding.DataBindingUtil
+import androidx.databinding.DataBindingUtil
 import android.os.Bundle
-import android.support.constraint.ConstraintLayout
-import android.support.constraint.ConstraintSet
-import android.support.v4.app.Fragment
-import android.support.v7.widget.GridLayoutManager
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintSet
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.GridLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -51,7 +51,7 @@ class SoundboardFragment : Fragment() {
                 it.getParcelableArrayList<SoundItem>(SOUND_ITEMS_KEY) as SoundItems
             } ?: arguments.getParcelableArrayList<SoundItem>(SOUND_ITEMS_KEY) as SoundItems
             binding.soundboardRecycleView.adapter = SoundsAdapter(soundItems, soundItemActionListener)
-            binding.soundboardRecycleView.layoutManager = GridLayoutManager(context, resources.getInteger(R.integer.span_count))
+            binding.soundboardRecycleView.layoutManager = androidx.recyclerview.widget.GridLayoutManager(context, resources.getInteger(R.integer.span_count))
             createAdsBanner(arguments.getString(ADS_ID_KEY))
         }
     }

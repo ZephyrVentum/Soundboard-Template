@@ -5,7 +5,7 @@
 
     <data />
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="100dp">
 
@@ -23,10 +23,10 @@
             app:layout_constraintTop_toTopOf="parent"
             app:riv_border_color="@color/item_image_border_color"
             app:riv_border_width="2dp"
-            app:riv_corner_radius="50dp"
+            app:riv_corner_radius="16dp"
             tools:src="@drawable/bg_main" />
 
-        <android.support.v7.widget.AppCompatTextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/nameTextView"
             android:layout_width="match_parent"
             android:layout_height="30dp"
@@ -48,5 +48,5 @@
             app:layout_constraintTop_toTopOf="@id/imageRoundedImageView"
             tools:text="Example Sound" />
 
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

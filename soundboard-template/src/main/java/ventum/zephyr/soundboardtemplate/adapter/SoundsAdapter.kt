@@ -4,10 +4,10 @@ import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.PorterDuff
 import android.graphics.drawable.RippleDrawable
-import android.support.annotation.DrawableRes
-import android.support.annotation.NonNull
-import android.support.v4.content.ContextCompat
-import android.support.v7.widget.RecyclerView
+import androidx.annotation.DrawableRes
+import androidx.annotation.NonNull
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -16,17 +16,17 @@ import ventum.zephyr.soundboardtemplate.databinding.ItemSoundBinding
 import ventum.zephyr.soundboardtemplate.listener.SoundItemActionListener
 import ventum.zephyr.soundboardtemplate.model.SoundItem
 
-class SoundsAdapter(private val soundItems: ArrayList<SoundItem>, val listener: SoundItemActionListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class SoundsAdapter(private val soundItems: ArrayList<SoundItem>, val listener: SoundItemActionListener) : androidx.recyclerview.widget.RecyclerView.Adapter<androidx.recyclerview.widget.RecyclerView.ViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): androidx.recyclerview.widget.RecyclerView.ViewHolder =
             SoundViewHolder(ItemSoundBinding.inflate(LayoutInflater.from(parent.context), parent, false))
 
     override fun getItemCount(): Int = soundItems.size
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) =
+    override fun onBindViewHolder(holder: androidx.recyclerview.widget.RecyclerView.ViewHolder, position: Int) =
             (holder as SoundViewHolder).bind(soundItems[position])
 
-    private inner class SoundViewHolder(var binding: ItemSoundBinding) : RecyclerView.ViewHolder(binding.root) {
+    private inner class SoundViewHolder(var binding: ItemSoundBinding) : androidx.recyclerview.widget.RecyclerView.ViewHolder(binding.root) {
 
         internal fun bind(itemSound: SoundItem) {
             setupImage(binding.imageRoundedImageView, itemSound.image)
