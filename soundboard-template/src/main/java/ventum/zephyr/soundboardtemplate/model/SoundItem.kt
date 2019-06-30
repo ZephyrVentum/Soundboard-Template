@@ -6,7 +6,7 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.RawRes
 import androidx.annotation.StringRes
 
-class SoundItem(@DrawableRes val image: Int, @RawRes val sound: Int, @StringRes val name: Int = -1, val isLongSound: Boolean = false) : Parcelable {
+data class SoundItem(@DrawableRes val image: Int, @RawRes val sound: Int, @StringRes val name: Int = -1, val isLongSound: Boolean = false) : Parcelable {
 
     constructor(@DrawableRes image: Int, @RawRes sound: Int) : this(image, sound, -1)
 
@@ -35,7 +35,7 @@ class SoundItem(@DrawableRes val image: Int, @RawRes val sound: Int, @StringRes 
     }
 }
 
-class SoundItems() : ArrayList<SoundItem>(), Parcelable {
+data class SoundItems(val index: Int = -1) : ArrayList<SoundItem>(), Parcelable {
     constructor(parcel: Parcel) : this()
 
     override fun writeToParcel(dest: Parcel?, flags: Int) {}
